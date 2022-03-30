@@ -8,10 +8,10 @@ btn.addEventListener('click', () => {
     console.log('asdf');
 
     const req = {
-        name2: name2,
-        major: major,
-        PN: PN,
-        comment: comment,
+        name: name2.value,
+        major: major.value,
+        phonenumber: PN.value,
+        comment: comment.value,
     };
 
     console.log(req);
@@ -22,15 +22,14 @@ btn.addEventListener('click', () => {
             "Content-Type": "application/json",
         },
         body: JSON.stringify(req),
-    });
+    }).then((res) => res.json())
+        .then((res) => {
+            if (res.success) {
+                location.href = "/";
+            }
+            else {
+                alert(res.msg);
+            }
+            console.log(res)
+        }).catch((err) => console.log);
 });
-    //.then((res) => res.json())
-    //     .then((res) => {
-    //         // if (res.success) {
-    //         //     location.href = "/";
-    //         // }
-    //         // else {
-    //         //     alert(res.msg);
-    //         // }
-    //         console.log(res)
-    //     }).catch((err) => console.error(new Error("sending error")));

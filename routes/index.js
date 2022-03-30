@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/post', postgetRouter);
-router.post('/post', postpostRouter);
+router.post('/post.js', postpostRouter);
 
 router.get('/reqlist', reqListRouter);
 
