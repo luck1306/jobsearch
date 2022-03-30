@@ -5,7 +5,6 @@ const PN = document.getElementById('phoneNumber');
 const comment = document.getElementById('comment');
 
 btn.addEventListener('click', () => {
-    console.log('asdf');
 
     const req = {
         name: name2.value,
@@ -14,9 +13,7 @@ btn.addEventListener('click', () => {
         comment: comment.value,
     };
 
-    console.log(req);
-
-    fetch("/post", {
+    fetch('/post', {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
