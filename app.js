@@ -6,7 +6,6 @@ const nunjucks = require('nunjucks');
 const indexRoute = require('./routes');
 const cookieParser = require('cookie-parser');
 const { sequelize } = require('./models');
-const { post } = require('./routes');
 
 dotenv.config();
 const app = express();
