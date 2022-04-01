@@ -3,18 +3,23 @@ const morgan = require('morgan');
 const dotenv = require('dotenv');
 const path = require('path');
 const nunjucks = require('nunjucks');
+const passport = require('passport'); // login
 const indexRoute = require('./routes');
 const cookieParser = require('cookie-parser');
 const { sequelize } = require('./models');
+const passportConfig = require('./passport'); // login
 
 dotenv.config();
 const app = express();
+passportConfig(); // login
 
 app.set('view engine', 'html');
 nunjucks.configure('views', {
     express: app,
     watch: true,
 });
+app.use(passport.initialize()); //login
+app.use(passport.session()); // login
 app.set('port', process.env.PORT || 3000);
 sequelize.sync({ force: false })
     .then(() => {

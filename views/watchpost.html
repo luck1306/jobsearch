@@ -9,11 +9,11 @@
 </head>
 
 <body>
-    <h1>전공 : ■■ ■■</h1>
-    <h1>기술 : ■■</h1>
+    <h1>전공 : {{ posting.major }}</h1>
+    <h1>이름 : {{ posting.name }}</h1>
 
-    <div>내용</div>
-    <h3>010■■■■■■■■</h3>
+    <div>{{ posting.comment }}</div>
+    <h3>0{{ posting.phonenumber }}</h3>
     <a href="/">
         <button>HOME</button>
     </a>

@@ -19,7 +19,7 @@ btn.addEventListener('click', async () => {
             comment: `${comment.value}`
         },
     }).then((res) => {
-        console.log(response)
+        console.log(res)
     })
 
     // response.json().then(data => {

@@ -1,6 +1,5 @@
 const express = require('express');
-const reqListRouter = require('./reqlist');
-const watchPostRouter = require('./watchpost');
+const Post = require('../models/post');
 const postRouter = require('./post');
 const router = express.Router();
 
@@ -11,8 +10,20 @@ router.get('/', (req, res) => {
 router.get('/post', postRouter.httpGet);
 router.post('/post', postRouter.httpPost);
 
-router.get('/reqlist', reqListRouter);
+router.get('/reqlist', async (req, res) => {
+    const postInfo = await Post.findAll({});
+    res.render('reqlist', { postInfo });
+});
 
-router.get('/watchpost', watchPostRouter);
+router.get('/:phonenumber/watchpost', async (req, res) => {
+    const posting = await Post.findOne({ where: { phonenumber: req.params.phonenumber } });
+    res.render('watchpost', { posting });
+});
+
+router.get('/login', (req, res) => {
+    res.render('login');
+});
+
+router.post('/login')
 
 module.exports = router;

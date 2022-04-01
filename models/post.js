@@ -19,7 +19,7 @@ module.exports = class Post extends Sequelize.Model {
                 type: Sequelize.TEXT,
                 allowNull: true,
                 defaultValue: '잘부탁드립니다',
-            }, // 기술 column도 추가 
+            },
         }, {
             sequelize,
             timestamps: false,
@@ -31,5 +31,5 @@ module.exports = class Post extends Sequelize.Model {
             collate: 'utf8_general_ci',
         })
     }
-    static associate(db) { }
+    static associate(db) { db.Post.belongsTo(db.User); }
 }
