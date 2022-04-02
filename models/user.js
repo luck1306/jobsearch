@@ -3,7 +3,7 @@ const Sequelize = require('sequelize');
 module.exports = class User extends Sequelize.Model {
     static init(sequelize) {
         return super.init({
-            userid: {
+            username: {
                 type: Sequelize.STRING(20),
                 allowNull: false,
             },
@@ -14,10 +14,10 @@ module.exports = class User extends Sequelize.Model {
         }, {
             sequelize,
             timestamps: false,
-            paranoid: false,
             underscored: false,
             modelName: 'Post',
             tableName: 'posts',
+            paranoid: false,
             charset: 'utf8',
             collate: 'utf8_general_ci'
         });

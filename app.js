@@ -28,7 +28,7 @@ app.use(session({
         httpOnly: true,
         secure: false,
     }
-}))
+}));
 sequelize.sync({ force: false })
     .then(() => {
         console.log('DB CONNECT SUCCESS');

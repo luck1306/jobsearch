@@ -23,24 +23,22 @@ router.get('/:phonenumber/watchpost', async (req, res) => {
     res.render('watchpost', { posting });
 });
 
-router.get('/join', (req, res) => {
-    res.render('join');
+router.get('/join', async (req, res) => {
+    const s = await User.findAll({}); // post는 reqlist 들어가면 테이블 알아서 생성됬는데 얘는 도대체 왜 제발 뭐때문인데 내가 따로 mysql들어가서 만들어주기도 했잖아 왜 제발 나한테 이러지마세
+    res.render('join', { s });
 });
 
 router.post('/join', async (req, res, next) => {
     try {
-        const { userid, password } = req.body;
-        User.create({
-            userid,
-            password
-        });
-        const exUser = User.findOne({ where: { userid } });
+        const { username, password } = req.body;
+        const exUser = User.findOne({ where: { username } });
         if (exUser) {
             res.redirect('/login', { message: '이미 가입되어있습니다' });
         }
+
         const hash = bcrypt.hash(password, 12);
-        User.create({
-            userid,
+        await User.create({
+            username,
             password: hash
         });
         return res.redirect('/login', { message: '가입되었습니다' });
