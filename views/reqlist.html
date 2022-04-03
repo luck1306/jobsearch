@@ -11,8 +11,7 @@
 <body>
     <ul>
         {% for i in postInfo %}
-        <li>{{i.major}}</li>
-        <a href="/{{i.phonenumber}}/watchpost">여기를 클릭</a><br>
+        <li> <a href="/{{i.phonenumber}}/watchpost">{{i.major}}</a><br></li>
         {% endfor %}
     </ul>
 </body>

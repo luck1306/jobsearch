@@ -5,8 +5,12 @@ const dotenv = require('dotenv');
 const path = require('path');
 const nunjucks = require('nunjucks');
 const passport = require('passport'); // login
-const indexRoute = require('./routes');
 const cookieParser = require('cookie-parser');
+
+const indexRouter = require('./routes');
+const postRouter = require('./routes/post');
+const joinRouter = require('./routes/join');
+const loginRouter = require('./routes/login');
 const { sequelize } = require('./models');
 const passportConfig = require('./passport'); // login
 
@@ -43,7 +47,10 @@ nunjucks.configure('views', {
 app.use(passport.initialize()); //login
 app.use(passport.session()); // login
 
-app.use('/', indexRoute);
+app.use('/login', loginRouter);
+app.use('/join', joinRouter);
+app.use('/post', postRouter);
+app.use('/', indexRouter);
 
 app.use((req, res, next) => { // 모든 미들웨어를 돌았을 때 포함되지 않은 것이 있을 때 발생
     const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);

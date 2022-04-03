@@ -2,11 +2,11 @@ const express = require('express');
 const Post = require('../models/post');
 const router = express.Router();
 
-const httpGet = router.get('/post', (req, res) => {
+router.get('/', (req, res) => {
     res.render('post');
 });
 
-const httpPost = router.post('/post', async (req, res) => {
+router.post('/', async (req, res) => {
     const { name, major, phonenumber, comment } = req.body;
     const thisPostExist = await Post.findOne({ where: { name } });
     if (thisPostExist) {
@@ -22,7 +22,4 @@ const httpPost = router.post('/post', async (req, res) => {
     }
 });
 
-module.exports = {
-    httpGet,
-    httpPost
-};
+module.exports = router;
