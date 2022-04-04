@@ -10,17 +10,18 @@ router.post('/', (req, res, next) => {
     passport.authenticate('local', (loginError, user, info) => {
         if (loginError) {
             console.error(loginError);
-            next(loginError);
+            return next(loginError);
         }
         if (!user) {
-            res.redirect('error', info);
+            res.json({ message: info.message });
+            // res.redirect('error', info);
         }
         return req.login(user, (err) => {
             if (err) {
                 console.error(err);
                 return next(err);
             }
-            res.json({ message: 'success' });
+            return res.json({ message: 'success' });
         })
     })(req, res, next);
 });
