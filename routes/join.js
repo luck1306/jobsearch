@@ -8,18 +8,22 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res, next) => {
     try {
-        const { id, password } = req.body;
-        const exUser = User.findOne({ where: { id } });
+        const { userid, password } = req.body;
+        const exUser = await User.findOne({ where: { userid } });
         if (exUser) {
-            res.redirect('/login', { message: '이미 가입되어있습니다' });
+            return res
+                //  .redirect('/login')
+                .json({ message: '이미 가입된 계정입니다' });
         }
 
-        const hash = bcrypt.hash(password, 12);
+        const hash = await bcrypt.hash(password, 12);
         await User.create({
-            id,
+            userid,
             password: hash
         });
-        return res.redirect('/post', { message: '가입되었습니다' });
+        return res
+            // .redirect('/post')
+            .json({ message: '가입되었습니다' });
     } catch (err) {
         console.error(err);
         return next(err);

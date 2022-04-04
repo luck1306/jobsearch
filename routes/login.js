@@ -20,9 +20,9 @@ router.post('/', (req, res, next) => {
                 console.error(err);
                 return next(err);
             }
-            res.redirect('/post');
+            res.json({ message: 'success' });
         })
     })(req, res, next);
 });
 
-module.exports = router
+module.exports = router;

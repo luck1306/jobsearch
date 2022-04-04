@@ -8,7 +8,7 @@ module.exports = class User extends Sequelize.Model {
                 allowNull: false,
             },
             password: {
-                type: Sequelize.STRING(20),
+                type: Sequelize.TEXT,
                 allowNull: false,
             }
         }, {
@@ -22,5 +22,5 @@ module.exports = class User extends Sequelize.Model {
             collate: 'utf8_general_ci'
         });
     }
-    static asssociate(db) { db.User.hasOne(db.Post); }
+    static asssociate(db) { db.User.hasOne(db.Post, { foreignKey: 'postingid', sourceKey: 'id' }); }
 }
