@@ -1,5 +1,5 @@
 const express = require('express');
-const User = require('../models/user');
+// const User = require('../models/user');
 const Post = require('../models/post');
 const router = express.Router();
 
@@ -9,12 +9,12 @@ router.get('/', (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const exLogin = req.get('login');
-        if (exLogin) {
-            await User.findOne({ where: { id: 4 } })
-                .then((user) => { req.login(user) })
-                .catch((err) => { console.error(err) });
-        }
+        // const exLogin = req.get('login');
+        // if (exLogin) {
+        //     await User.findOne({ where: { id: 4 } })
+        //         .then((user) => { req.login(user) })
+        //         .catch((err) => { console.error(err) });
+        // }
         const { name, major, phonenumber, comment } = req.body;
         const thisPostExist = await Post.findOne({ where: { postingid: req.user.id } });
         if (thisPostExist) {
@@ -34,10 +34,10 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.post('/:phonenumber', async (req, res) => {
+router.post('/:phonenumber', async (req, res, next) => {
     await Post.destroy({ where: { phonenumber: req.params.phonenumber } })
-        .then(() => { res.redirect('/') })
-        .catch((err) => { next(err) });
+        .then(() => { res.redirect('/'); })
+        .catch((err) => { console.error(err); next(err); });
 });
 
 module.exports = router;
