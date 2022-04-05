@@ -11,9 +11,7 @@ router.post('/', async (req, res, next) => {
         const { userid, password } = req.body;
         const exUser = await User.findOne({ where: { userid } });
         if (exUser) {
-            return res
-                //  .redirect('/login')
-                .json({ message: '이미 가입된 계정입니다' });
+            return res.json({ message: '이미 가입된 계정입니다' });
         }
 
         const hash = await bcrypt.hash(password, 12);
@@ -21,9 +19,7 @@ router.post('/', async (req, res, next) => {
             userid,
             password: hash
         });
-        return res
-            // .redirect('/post')
-            .json({ message: '가입되었습니다' });
+        return res.json({ message: '가입되었습니다' });
     } catch (err) {
         console.error(err);
         return next(err);

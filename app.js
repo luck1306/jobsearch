@@ -13,6 +13,7 @@ const joinRouter = require('./routes/join');
 const loginRouter = require('./routes/login');
 const { sequelize } = require('./models');
 const passportConfig = require('./passport'); // login
+const { isLoggedIn, isNotLoggedIn } = require('./routes/middlewear');
 
 dotenv.config();
 const app = express();
@@ -47,9 +48,9 @@ nunjucks.configure('views', {
 app.use(passport.initialize()); //login
 app.use(passport.session()); // login
 
-app.use('/login', loginRouter);
-app.use('/join', joinRouter);
-app.use('/post', postRouter);
+app.use('/login', /*isNotLoggedIn,*/ loginRouter);
+app.use('/join', isNotLoggedIn, joinRouter);
+app.use('/post', /*isLoggedIn,*/ postRouter);
 app.use('/', indexRouter);
 
 app.use((req, res, next) => { // 모든 미들웨어를 돌았을 때 포함되지 않은 것이 있을 때 발생
