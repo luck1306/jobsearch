@@ -2,8 +2,10 @@ const express = require('express');
 const Post = require('../models/post');
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.render('post');
+router.get('/', async (req, res, next) => {
+    await Post.findOne({ where: { postingid: req.user.id } })
+        .then((user) => { res.json(user) })
+        .catch((err) => next(err));
 });
 
 router.post('/', async (req, res) => {
@@ -11,7 +13,16 @@ router.post('/', async (req, res) => {
         const { name, major, phonenumber, comment } = req.body;
         const thisPostExist = await Post.findOne({ where: { postingid: req.user.id } });
         if (thisPostExist) {
-            res.json({ success: false });
+            await Post.update({
+                name,
+                major,
+                phonenumber,
+                comment
+            }, {
+                where: {
+                    postingid: thisPostExist.postingid
+                }
+            });
         } else {
             await Post.create({
                 name,
