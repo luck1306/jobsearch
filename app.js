@@ -4,20 +4,20 @@ const session = require('express-session');
 const dotenv = require('dotenv');
 const path = require('path');
 const nunjucks = require('nunjucks');
-const passport = require('passport'); // login
+const passport = require('passport');
 const cookieParser = require('cookie-parser');
 
-const indexRouter = require('./routes');
+const chooseRouter = require('./routes/choose');
 const postRouter = require('./routes/post');
 const joinRouter = require('./routes/join');
 const loginRouter = require('./routes/login');
 const { sequelize } = require('./models');
-const passportConfig = require('./passport'); // login
+const passportConfig = require('./passport');
 const { isLoggedIn, isNotLoggedIn } = require('./routes/middlewear');
 
 dotenv.config();
 const app = express();
-passportConfig(); // login
+passportConfig();
 
 app.set('port', process.env.PORT || 3000);
 app.use(morgan('dev'));
@@ -45,21 +45,31 @@ nunjucks.configure('views', {
     express: app,
     watch: true,
 });
-app.use(passport.initialize()); //login
-app.use(passport.session()); // login
+app.use(passport.initialize());
+app.use(passport.session());
 
-app.use('/login', /*isNotLoggedIn,*/ loginRouter);
+app.get('/', (req, res) => {
+    res.redirect('/login');
+});
+
+app.use('/login', isNotLoggedIn, loginRouter);
 app.use('/join', isNotLoggedIn, joinRouter);
-app.use('/post', /*isLoggedIn,*/ postRouter);
-app.use('/', indexRouter);
+app.use('/post', isLoggedIn, postRouter);
+app.use('/choose', isLoggedIn, chooseRouter);
 
-app.use((req, res, next) => { // 모든 미들웨어를 돌았을 때 포함되지 않은 것이 있을 때 발생
+app.get('/logout', (req, res) => {
+    req.logOut();
+    req.session.destroy();
+    res.redirect('/');
+});
+
+app.use((req, res, next) => {
     const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);
     error.status = 404;
     next(error);
 });
 
-app.use((err, req, res, next) => { // 에러처리 미들웨어 (나중에 배우자)
+app.use((err, req, res, next) => {
     res.locals.message = err.message;
     res.locals.error = process.env.NODE_ENV !== 'production' ? err : {};
     res.status(err.status || 500);

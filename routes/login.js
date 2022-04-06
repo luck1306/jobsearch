@@ -1,5 +1,5 @@
-const epxress = require('express');
-const router = epxress.Router();
+const express = require('express');
+const router = express.Router();
 const passport = require('passport');
 
 router.get('/', (req, res) => {
@@ -13,7 +13,7 @@ router.post('/', (req, res, next) => {
             return next(loginError);
         }
         if (!user) {
-            res.json({ message: info.message });
+            res.json(info);
             // res.redirect('error', info);
         }
         return req.login(user, (err) => {
@@ -21,7 +21,7 @@ router.post('/', (req, res, next) => {
                 console.error(err);
                 return next(err);
             }
-            return res.json({ message: 'success' });
+            return res.json(user/*{ message: 'success' }*/); // res.redirect('/choose');
         })
     })(req, res, next);
 });
