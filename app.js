@@ -58,9 +58,14 @@ app.use('/post', isLoggedIn, postRouter);
 app.use('/choose', isLoggedIn, chooseRouter);
 
 app.get('/logout', (req, res) => {
-    req.logOut();
-    req.session.destroy();
-    res.redirect('/');
+    try {
+        req.logout();
+        req.session.destroy();
+        res.redirect('/login');
+    } catch (err) {
+        console.error(err);
+        res.json({ message: "로그아웃 중 오류가 발생했습니다" });
+    }
 });
 
 app.use((req, res, next) => {
@@ -73,7 +78,7 @@ app.use((err, req, res, next) => {
     res.locals.message = err.message;
     res.locals.error = process.env.NODE_ENV !== 'production' ? err : {};
     res.status(err.status || 500);
-    res.render('error');
+    res.json({ message: "server error" });
 });
 
 app.listen(app.get('port'), () => {

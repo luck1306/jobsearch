@@ -2,8 +2,13 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 
-router.get('/', (req, res) => {
-    res.render('login');
+router.get('/', (req, res, next) => {
+    try {
+        res.json({ message: "success" });
+    } catch (err) {
+        console.error(err);
+        return next(err);
+    }
 });
 
 router.post('/', (req, res, next) => {
@@ -14,14 +19,13 @@ router.post('/', (req, res, next) => {
         }
         if (!user) {
             res.json(info);
-            // res.redirect('error', info);
         }
         return req.login(user, (err) => {
             if (err) {
                 console.error(err);
                 return next(err);
             }
-            return res.json(user/*{ message: 'success' }*/); // res.redirect('/choose');
+            return res.json({ message: 'success' });
         })
     })(req, res, next);
 });

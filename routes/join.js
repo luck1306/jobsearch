@@ -3,7 +3,12 @@ const User = require('../models/user');
 const bcrypt = require('bcrypt');
 
 router.get('/', async (req, res) => {
-    res.render('join');
+    try {
+        res.json({ message: "success" });
+    } catch (err) {
+        console.error(err);
+        res.json({ message: "fail" });
+    }
 });
 
 router.post('/', async (req, res, next) => {
