@@ -3,7 +3,6 @@ const morgan = require('morgan');
 const session = require('express-session');
 const dotenv = require('dotenv');
 const path = require('path');
-const nunjucks = require('nunjucks');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
 
@@ -40,11 +39,6 @@ sequelize.sync({ force: false })
     }).catch((err) => {
         console.error(err);
     });
-app.set('view engine', 'html');
-nunjucks.configure('views', {
-    express: app,
-    watch: true,
-});
 app.use(passport.initialize());
 app.use(passport.session());
 
